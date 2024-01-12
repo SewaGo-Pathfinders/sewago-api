@@ -4,15 +4,16 @@ import { getFirestore } from 'firebase-admin/firestore';
 initializeApp({
   projectId: process.env.FIREBASE_PROJECT_ID,
   credential: cert({
+    projectId: process.env.FIREBASE_PROJECT_ID,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
     privateKey: process.env.FIREBASE_PRIVATE_KEY,
-    projectId: process.env.FIREBASE_PROJECT_ID,
   }),
 });
 
 const db = getFirestore();
 
 export const userRef = db.collection('user');
+export const addressRef = db.collection('address');
 export const userReviewRef = db.collection('userReview');
 
 export const productRef = db.collection('product');
