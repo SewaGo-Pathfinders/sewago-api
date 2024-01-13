@@ -33,7 +33,7 @@ export async function signUp(req: Request, res: Response) {
     refreshToken: null,
   });
 
-  return res.status(201).json({ message: 'Akun telah dibuat! Silahkan login' });
+  res.status(201).json({ message: 'Akun telah dibuat! Silahkan login' });
 }
 
 export async function signIn(req: Request, res: Response) {
@@ -70,18 +70,20 @@ export async function signIn(req: Request, res: Response) {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 15),
     });
 
-    return res.status(200).json({ payload: { requestToken } });
+    res.status(200).json({ payload: { requestToken } });
   } catch (error) {
     console.error(error);
-    return res.status(404).json(error);
+    res.status(404).json(error);
   }
 }
 
 export async function createAddress(req: Request, res: Response) {
   const token = req.headers.authorization?.split(' ')[1];
 
-  if (!token)
-    return res.status(403).json({ message: 'Request token tidak tercantum' });
+  if (!token) {
+    res.status(403).json({ message: 'Request token tidak tercantum' });
+    return;
+  }
   
   const isLegal = verifyToken<RequestTokenPayload>(token);
   
@@ -98,5 +100,5 @@ export async function createAddress(req: Request, res: Response) {
     postalCode,
   });
 
-  return res.status(201).json({ message: 'Alamat akun Anda telah dibuat' });
+  res.status(201).json({ message: 'Alamat akun Anda telah dibuat' });
 }
