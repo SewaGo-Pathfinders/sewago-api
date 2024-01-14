@@ -9,6 +9,7 @@ import './database';
 
 import router from './routes';
 import checkNodeEnv from './lib/checkNodeEnv';
+import { verify } from './middlewares/verify';
 
 const app = express();
 const PORT = 3030;
@@ -24,16 +25,13 @@ app.use(cors({
 app.use(urlencoded({ extended: false }));
 app.use(json());
 
+app.use(verify);
 app.get('/', (req, res) => {
   res.send('Hey, Our RESTfull-API has been published!');
 });
 
 app.use(router);
 
-if (!checkNodeEnv()) {
-  app.listen(PORT, () => {
-    console.log(`server starting on http://localhost:${PORT}`);
-  });
-}
-
-export default app;
+app.listen(PORT, () => {
+  console.log(`server starting on port ${PORT}`);
+});
